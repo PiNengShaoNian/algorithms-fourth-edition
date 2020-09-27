@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const unifrom = (a, b) => {
+        return Math.floor((b - a) * Math.random() + a)
+      }
+      class Counter {
+        constructor(name) {
+          this.name = name
+          this.count = 0
+        }
+
+        increment() {
+          return ++this.count
+        }
+
+        tally() {
+          return this.count
+        }
+
+        // valueOf() {
+        //   return this.count
+        // }
+
+        toString() {
+          return `${this.name}: ${this.count}`
+        }
+      }
+
+      const iter = +window.prompt()
+      const SIDES = 6
+      const rolls = []
+      for (let i = 1; i <= SIDES; i++) {
+        rolls[i] = new Counter(i + 's')
+      }
+
+      for (let i = 0; i < iter; i++) {
+        const result = unifrom(1, SIDES + 1)
+        rolls[result].increment()
+      }
+
+      for (let i = 1; i <= SIDES; i++) {
+        console.log(rolls[i] + '')
+        
+      }
+    </script>
+  </body>
+</html>

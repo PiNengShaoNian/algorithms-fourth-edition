@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    const [N, l, r] = window.prompt('N,l,r').split(',').map(Number)
+
+    console.time('a')
+    const getData = (a, b, len) => {
+      return Array.from({ length: len }, () => {
+        return (b - a) * Math.random() + a
+      })
+      //   const result = []
+      //   for (let i = 0; i < len; i++) {
+      //     result.push((b - a) * Math.random() + a)
+      //   }
+      //   return result
+    }
+    console.time('getData')
+    const data = getData(l, r, 100000)
+    console.timeEnd('getData')
+    const binarySearch = (list, key) => {
+      let low = 0
+      let high = list.length - 1
+      while (low <= high) {
+        const mid = Math.floor((low + high) / 2)
+        if (list[mid] === key) return { index: mid, low, high }
+        else if (list[mid] > key) high = mid - 1
+        else low = mid + 1
+      }
+      return { index: -1, low, high }
+    }
+
+    const bruteForceSearch = (list, key) => {
+      for (let i = 0; i < list.length; i++) {
+        let cur = list[i]
+        let next = list[i + 1]
+        if (key > cur) {
+          if (next && key > next) continue
+          else return { high: list.length - 1 }
+          return { high: i }
+        } else {
+          return { high: i }
+        }
+      }
+    }
+
+    const interval = Math.floor((r - l) / N)
+    const sections = {}
+    for (let i = 0; i < N; i++) {
+      sections[l + i * interval] = []
+    }
+
+    const sectionsKeyMap = Object.keys(sections)
+    console.time('divide')
+    for (let i = 0; i < data.length; i++) {
+      //   const { index, low, high } = binarySearch(sectionsKeyMap, data[i])
+      const { index, low, high } = bruteForceSearch(sectionsKeyMap, data[i])
+      sections[sectionsKeyMap[high]].push(data[i])
+    }
+    console.timeEnd('divide')
+
+    console.log(sections)
+    console.timeEnd('a')
+  </script>
+</html>

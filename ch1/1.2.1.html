@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800">
+      <%--浏览器不支持canvas 标签--%>
+    </canvas>
+    <script>
+      function getCTX() {
+        let c = document.getElementById('canvas')
+        let ctx = c.getContext('2d')
+        ctx.clearRect(0, 0, c.width, c.height)
+        return ctx
+      }
+      let ctx = getCTX()
+      function drawPoint({ x, y, distance }) {
+        // 获取画笔
+
+        // 设置绘制颜色
+        ctx.fillStyle = '#0000FF'
+        // 绘制成矩形
+        ctx.fillRect(x - 2, y - 2, 4, 4)
+
+        // 设置字体样式
+        ctx.font = '16px bold 宋体'
+
+        ctx.fillText(distance, x, y)
+        // 绘制文字
+      }
+
+      const uniform = (a, b) => {
+        return Math.floor((b - a) * Math.random() + a)
+      }
+
+      const points = []
+      for (let i = 0; i < 100; i++) {
+        const x = uniform(1, 800)
+        const y = uniform(1, 800)
+
+        const distance = points[0]
+          ? Math.sqrt(
+              Math.abs(x - points[0].x) ** 2 + Math.abs(y - points[0].y) ** 2
+            )
+          : 0
+        points.push({ x, y, distance: distance.toFixed(2) })
+      }
+
+      for (let i = 0; i < points.length; i++) {
+        drawPoint(points[i])
+      }
+    </script>
+  </body>
+</html>

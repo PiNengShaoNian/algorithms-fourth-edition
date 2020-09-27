@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="1700" height="600"></canvas>
+
+    <script>
+      const delay = (ms = 200) => {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+      }
+      class Selection {
+        static async sort(a) {
+          for (let i = 0; i < a.length; i++) {
+            let mV = a[i]
+            let mI = i
+            let t
+            for (let j = i; j < a.length; j++) {
+              if (a[j] < mV) {
+                mV = a[j]
+                mI = j
+              }
+            }
+            t = a[i]
+            a[i] = mV
+            a[mI] = t
+            drawArr(a)
+            await delay(200)
+          }
+
+          return a
+        }
+      }
+
+      class Insertion {
+        static async sort(a) {
+          let j
+          let t
+          for (let i = 1; i < a.length; i++) {
+            j = i
+            while (j) {
+              if (a[j] >= a[j - 1]) {
+                break
+              } else {
+                t = a[j - 1]
+                a[j - 1] = a[j]
+                a[j] = t
+                --j
+                drawArr(a)
+                await delay(100)
+              }
+            }
+          }
+
+          return a
+        }
+      }
+
+      class Shell {
+        static async sort(a) {
+          let N = a.length
+          let h = 1
+          let t
+          while (h < Math.floor(N / 3)) h = 3 * h + 1
+          while (h >= 1) {
+            for (let i = h; i < N; i++) {
+              for (let j = i; j >= h && a[j] < a[j - h]; j -= h) {
+                t = a[j]
+                a[j] = a[j - h]
+                a[j - h] = t
+
+                drawArr(a, [j, j - h])
+                await delay(1000)
+              }
+            }
+            h = Math.floor(h / 3)
+          }
+          return a
+        }
+      }
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+
+      const drawArr = (arr, hightlight = []) => {
+        context.clearRect(0, 0, 2000, 2000)
+        const max = Math.max(...arr)
+        const getHeight = (v) => (v / max) * 500
+        const width = 1700 / arr.length
+        const space = Math.min(width * 0.3, 20)
+        const avaliableWidth = width - space
+
+        for (let i = 0; i < arr.length; i++) {
+          const height = getHeight(arr[i])
+
+          const color = hightlight.indexOf(i) > -1 ? 'blue' : 'red'
+
+          context.fillStyle = color
+
+          const x1 = (space + avaliableWidth) * i
+          const y1 = 600 - height
+          context.fillRect(x1, y1, avaliableWidth, height)
+        }
+      }
+
+      const uniform = (min, max) =>
+        Math.floor((max - min) * Math.random() + min)
+
+      const arr1 = Array.from({ length: 100 }, (_, i) => 100 - i)
+      //   Selection.sort(arr1)
+      //   Insertion.sort(arr1)
+      Shell.sort(arr1)
+    </script>
+  </body>
+</html>
