@@ -1,6 +1,6 @@
 import LongRandomPrime from './5.3.33'
 
-class RabinKarp {
+class RabinKarpSearchAll {
   private pat: string
   private patHash: number
   private M: number
@@ -10,14 +10,14 @@ class RabinKarp {
 
   constructor(pat: string) {
     this.pat = pat
-
     this.M = pat.length
-
     this.Q = LongRandomPrime.longRandomPrime()
     this.RM = 1
+
     for (let i = 1; i <= this.M - 1; i++) {
       this.RM = (this.R * this.RM) % this.Q
     }
+
     this.patHash = this.hash(pat, this.M)
   }
 
@@ -36,6 +36,7 @@ class RabinKarp {
 
   search(txt: string): number {
     const N = txt.length
+
     let txtHash = this.hash(txt, this.M)
 
     if (this.patHash === txtHash && this.check(0)) return 0

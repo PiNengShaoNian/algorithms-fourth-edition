@@ -10,7 +10,6 @@ class LongRandomPrime {
     let foundLongRandomPrime = false
 
     const primeNumbers = this.eratosthenesSieveGetOnlyPrimes()
-    debugger
     while (!foundLongRandomPrime) {
       let number = ''
 
