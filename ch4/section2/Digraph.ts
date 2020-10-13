@@ -1,7 +1,13 @@
-const Bag = require('../../lib/Bag')
+import Bag from '../../lib/Bag'
 
 class Digraph {
-  constructor(v) {
+  private _V: number
+  private _E: number
+  private _adj: Bag<number>[]
+  private indegrees: number[]
+  private outdegrees: number[]
+
+  constructor(v: number) {
     this._V = v
     this._E = 0
 
@@ -10,34 +16,34 @@ class Digraph {
     this.outdegrees = Array.from({ length: v }, () => 0)
   }
 
-  indegree(vertex) {
+  indegree(vertex: number): number {
     return this.indegrees[vertex]
   }
 
-  outdegree(vertex) {
+  outdegree(vertex: number): number {
     return this.outdegrees[vertex]
   }
 
-  V() {
+  V(): number {
     return this._V
   }
 
-  E() {
+  E(): number {
     return this._E
   }
 
-  addEdge(v, w) {
+  addEdge(v: number, w: number): void {
     this._adj[v].add(w)
     this._E++
     this.outdegrees[v]++
     this.indegrees[w]++
   }
 
-  adj(v) {
+  adj(v: number): Bag<number> {
     return this._adj[v]
   }
 
-  reverse() {
+  reverse(): Digraph {
     const R = new Digraph(this._V)
 
     for (let v = 0; v < this._V; v++) {
@@ -50,4 +56,4 @@ class Digraph {
   }
 }
 
-module.exports = Digraph
+export default Digraph
