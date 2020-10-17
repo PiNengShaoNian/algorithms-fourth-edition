@@ -145,8 +145,3 @@ class RegularExpressionMatcherRange extends RegularExpressionMatcher {
     return false
   }
 }
-
-const range = new RegularExpressionMatcherRange('RENE[A-Z]')
-
-debugger
-console.log(range.recognizes('RENEA'))
